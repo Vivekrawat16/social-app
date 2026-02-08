@@ -227,3 +227,29 @@ exports.commentPost = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.deletePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        // Check if the user owns the post
+        if (post.userId.toString() !== req.user.userId) {
+            return res.status(403).json({ message: 'Not authorized to delete this post' });
+        }
+
+        // Delete the image file if it exists
+        if (post.imageUrl) {
+            const imagePath = path.join(__dirname, '..', post.imageUrl);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+
+        await Post.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Post deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

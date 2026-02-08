@@ -9,6 +9,9 @@ const PostCard = ({ post }) => {
     const [comments, setComments] = useState(post.comments);
     const [commentText, setCommentText] = useState('');
     const [expanded, setExpanded] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
+
+    const isOwner = post.userId === user?.userId || post.userId === user?._id;
 
     const isLiked = likes.some(id => id === user?.userId || id === user?._id);
 
@@ -37,6 +40,19 @@ const PostCard = ({ post }) => {
             console.error('Error commenting:', err);
         }
     };
+
+    const handleDelete = async () => {
+        if (!window.confirm('Are you sure you want to delete this post?')) return;
+        try {
+            await api.delete(`/posts/${post._id}`);
+            setIsDeleted(true);
+        } catch (err) {
+            console.error('Error deleting post:', err);
+            alert('Failed to delete post');
+        }
+    };
+
+    if (isDeleted) return null;
 
     return (
         <div className="card mb-4 animate-fade-in" style={{ padding: 0, overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
@@ -71,6 +87,33 @@ const PostCard = ({ post }) => {
                         {new Date(post.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                     </p>
                 </div>
+
+                {/* Delete Button - Only for post owner */}
+                {isOwner && (
+                    <button
+                        onClick={handleDelete}
+                        style={{
+                            marginLeft: 'auto',
+                            background: 'none',
+                            border: 'none',
+                            color: '#ef4444',
+                            cursor: 'pointer',
+                            padding: '8px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                        title="Delete post"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+                )}
             </div>
 
             <div style={{ padding: 'var(--spacing-lg) var(--spacing-md) var(--spacing-sm)' }}>
