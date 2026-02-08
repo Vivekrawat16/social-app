@@ -48,7 +48,7 @@ const PostCard = ({ post }) => {
                         height: '44px',
                         borderRadius: '50%',
                         background: post.user?.profilePicUrl
-                            ? `url(${post.user.profilePicUrl.startsWith('http') ? post.user.profilePicUrl : `http://localhost:5000${post.user.profilePicUrl}`}) center/cover no-repeat`
+                            ? `url(${post.user.profilePicUrl.startsWith('http') ? post.user.profilePicUrl : post.user.profilePicUrl}) center/cover no-repeat`
                             : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
                         color: 'white',
                         display: 'flex',
@@ -145,7 +145,7 @@ const PostCard = ({ post }) => {
             {post.imageUrl && (
                 <div style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', display: 'flex', justifyContent: 'center' }}>
                     <img
-                        src={post.imageUrl.startsWith('http') ? post.imageUrl : `http://localhost:5000${post.imageUrl}`}
+                        src={post.imageUrl.startsWith('http') ? post.imageUrl : post.imageUrl}
                         alt="Post content"
                         style={{ width: '100%', maxHeight: '600px', objectFit: 'contain' }}
                     />

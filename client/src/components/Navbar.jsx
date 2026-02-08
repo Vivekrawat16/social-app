@@ -100,7 +100,7 @@ const Navbar = () => {
                                 width: '45px',
                                 height: '45px',
                                 borderRadius: '50%',
-                                background: user.profilePicUrl ? `url(http://localhost:5000${user.profilePicUrl}) center/cover no-repeat` : '#ff9f1c', // Orange fallback
+                                background: user.profilePicUrl ? `url(${user.profilePicUrl}) center/cover no-repeat` : '#ff9f1c', // Orange fallback
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',

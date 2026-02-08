@@ -182,7 +182,7 @@ const Profile = () => {
                             height: '100%',
                             borderRadius: '50%',
                             background: profileUser.profilePicUrl
-                                ? `url(http://localhost:5000${profileUser.profilePicUrl}) center/cover no-repeat`
+                                ? `url(${profileUser.profilePicUrl}) center/cover no-repeat`
                                 : 'linear-gradient(135deg, #f59e0b, #ec4899)',
                             display: 'flex',
                             alignItems: 'center',
